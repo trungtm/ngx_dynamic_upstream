@@ -234,7 +234,9 @@ ngx_dynamic_upstream_op_impl(ngx_log_t *log, ngx_dynamic_upstream_op_t *op,
 
     rc = NGX_OK;
 
-    ngx_shmtx_lock(&shpool->mutex);
+    if (shpool) {
+        ngx_shmtx_lock(&shpool->mutex);
+    }
 
     switch (op->op) {
     case NGX_DYNAMIC_UPSTEAM_OP_ADD:
@@ -255,7 +257,9 @@ ngx_dynamic_upstream_op_impl(ngx_log_t *log, ngx_dynamic_upstream_op_t *op,
         break;
     }
 
-    ngx_shmtx_unlock(&shpool->mutex);
+    if (shpool) {
+        ngx_shmtx_unlock(&shpool->mutex);
+    }
 
     return rc;
 }
