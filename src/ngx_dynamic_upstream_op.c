@@ -246,8 +246,8 @@ ngx_dynamic_upstream_op_impl(ngx_log_t *log, ngx_dynamic_upstream_op_t *op,
                                                                 : ngx_dynamic_upstream_http_op_remove(log, op, shpool, primary->http);
         break;
     case NGX_DYNAMIC_UPSTEAM_OP_PARAM:
-        rc = op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_STREAM ? ngx_dynamic_upstream_stream_op_update_param(log, op, shpool, primary->stream)
-                                                                : ngx_dynamic_upstream_http_op_update_param(log, op, shpool, primary->http);
+        rc = op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_STREAM ? ngx_dynamic_upstream_stream_op_update_param(log, op, primary->stream)
+                                                                : ngx_dynamic_upstream_http_op_update_param(log, op, primary->http);
         break;
     case NGX_DYNAMIC_UPSTEAM_OP_LIST:
     default:
@@ -750,8 +750,9 @@ c:
 
 
 static ngx_int_t
-ngx_dynamic_upstream_http_op_update_param(ngx_log_t *log, ngx_dynamic_upstream_op_t *op,
-                                          ngx_slab_pool_t *shpool, ngx_http_upstream_rr_peers_t *primary)
+ngx_dynamic_upstream_http_op_update_param(ngx_log_t *log,
+                                          ngx_dynamic_upstream_op_t *op,
+                                          ngx_http_upstream_rr_peers_t *primary)
 {
     ngx_http_upstream_rr_peer_t   *peer, *target;
     ngx_http_upstream_rr_peers_t  *peers;
@@ -816,8 +817,9 @@ ngx_dynamic_upstream_http_op_update_param(ngx_log_t *log, ngx_dynamic_upstream_o
 
 
 static ngx_int_t
-ngx_dynamic_upstream_stream_op_update_param(ngx_log_t *log, ngx_dynamic_upstream_op_t *op,
-                                            ngx_slab_pool_t *shpool, ngx_stream_upstream_rr_peers_t *primary)
+ngx_dynamic_upstream_stream_op_update_param(ngx_log_t *log,
+                                            ngx_dynamic_upstream_op_t *op,
+                                            ngx_stream_upstream_rr_peers_t *primary)
 {
     ngx_stream_upstream_rr_peer_t   *peer, *target;
     ngx_stream_upstream_rr_peers_t  *peers;

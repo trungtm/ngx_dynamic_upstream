@@ -342,8 +342,9 @@ ngx_int_t
 ngx_dynamic_upstream_op(ngx_log_t *log, ngx_dynamic_upstream_op_t *op, ngx_http_upstream_srv_conf_t *uscf)
 {
     ngx_upstream_rr_peers_t peers;
+    ngx_slab_pool_t *slab_pool = (ngx_slab_pool_t *) (uscf->shm_zone ? uscf->shm_zone->shm.addr : NULL);
     peers.http = uscf->peer.data;
-    return ngx_dynamic_upstream_op_impl(log, op, (ngx_slab_pool_t*) uscf->shm_zone->shm.addr, &peers);
+    return ngx_dynamic_upstream_op_impl(log, op, slab_pool, &peers);
 }
 
 
@@ -351,6 +352,7 @@ ngx_int_t
 ngx_dynamic_upstream_stream_op(ngx_log_t *log, ngx_dynamic_upstream_op_t *op, ngx_stream_upstream_srv_conf_t *uscf)
 {
     ngx_upstream_rr_peers_t peers;
+    ngx_slab_pool_t *slab_pool = (ngx_slab_pool_t *) (uscf->shm_zone ? uscf->shm_zone->shm.addr : NULL);
     peers.stream = uscf->peer.data;
-    return ngx_dynamic_upstream_op_impl(log, op, (ngx_slab_pool_t*) uscf->shm_zone->shm.addr, &peers);
+    return ngx_dynamic_upstream_op_impl(log, op, slab_pool, &peers);
 }
