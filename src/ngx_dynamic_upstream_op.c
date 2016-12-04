@@ -45,10 +45,10 @@ ngx_dynamic_upstream_stream_op_remove(ngx_log_t *log, ngx_dynamic_upstream_op_t 
                                       ngx_slab_pool_t *shpool, ngx_stream_upstream_rr_peers_t *primary);
 static ngx_int_t
 ngx_dynamic_upstream_http_op_update_param(ngx_log_t *log, ngx_dynamic_upstream_op_t *op,
-                                          ngx_slab_pool_t *shpool, ngx_http_upstream_rr_peers_t *primary);
+                                          ngx_http_upstream_rr_peers_t *primary);
 static ngx_int_t
 ngx_dynamic_upstream_stream_op_update_param(ngx_log_t *log, ngx_dynamic_upstream_op_t *op,
-                                            ngx_slab_pool_t *shpool, ngx_stream_upstream_rr_peers_t *primary);
+                                            ngx_stream_upstream_rr_peers_t *primary);
 
 
 static ngx_int_t
