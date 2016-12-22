@@ -6,6 +6,8 @@
 
         * bugfix: fixed cuncurent access to peers from many nginx workers
 
+	* 1.0.0 released.
+
 2016-02-11 Tatsuhiko Kubo <cubicdaiya@gmail.com>
 
 	* feature: dynamic module is available from nginx-1.9.11.
