@@ -804,12 +804,16 @@ ngx_dynamic_upstream_http_op_update_param(ngx_log_t *log,
 
     if (op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_UP) {
         target->down = 0;
+        target->checked = ngx_time();
+        target->fails = 0;
         ngx_log_error(NGX_LOG_NOTICE, log, 0,
                       "downed server %V", &op->server);
     }
 
     if (op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_DOWN) {
         target->down = 1;
+        target->checked = ngx_time();
+        target->fails = target->max_fails;
         ngx_log_error(NGX_LOG_NOTICE, log, 0,
                       "upped server %V", &op->server);
     }
@@ -871,12 +875,16 @@ ngx_dynamic_upstream_stream_op_update_param(ngx_log_t *log,
 
     if (op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_UP) {
         target->down = 0;
+        target->checked = ngx_time();
+        target->fails = 0;
         ngx_log_error(NGX_LOG_NOTICE, log, 0,
                       "downed server %V", &op->server);
     }
 
     if (op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_DOWN) {
         target->down = 1;
+        target->checked = ngx_time();
+        target->fails = target->max_fails;
         ngx_log_error(NGX_LOG_NOTICE, log, 0,
                       "upped server %V", &op->server);
     }
