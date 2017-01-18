@@ -20,7 +20,11 @@
 #define NGX_DYNAMIC_UPSTEAM_OP_PARAM_FAIL_TIMEOUT 4
 #define NGX_DYNAMIC_UPSTEAM_OP_PARAM_UP           8
 #define NGX_DYNAMIC_UPSTEAM_OP_PARAM_DOWN         16
+
+#if defined(nginx_version) && (nginx_version >= 1011005)
 #define NGX_DYNAMIC_UPSTEAM_OP_PARAM_MAX_CONNS    32
+#endif
+
 #define NGX_DYNAMIC_UPSTEAM_OP_PARAM_STREAM       256
 
 typedef struct ngx_dynamic_upstream_op_t {
@@ -30,7 +34,11 @@ typedef struct ngx_dynamic_upstream_op_t {
     ngx_int_t backup;
     ngx_int_t weight;
     ngx_int_t max_fails;
+
+#if defined(nginx_version) && (nginx_version >= 1011005)
     ngx_int_t max_conns;
+#endif
+
     ngx_int_t fail_timeout;
     ngx_int_t up;
     ngx_int_t down;

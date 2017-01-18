@@ -21,7 +21,11 @@ static const ngx_str_t ngx_dynamic_upstream_params[] = {
     ngx_string("arg_server"),
     ngx_string("arg_weight"),
     ngx_string("arg_max_fails"),
+
+#if defined(nginx_version) && (nginx_version >= 1011005)
     ngx_string("arg_max_conns"),
+#endif
+
     ngx_string("arg_fail_timeout"),
     ngx_string("arg_up"),
     ngx_string("arg_down"),
@@ -147,7 +151,9 @@ ngx_dynamic_upstream_build_op(ngx_http_request_t *r, ngx_dynamic_upstream_op_t *
                 op->op_param |= NGX_DYNAMIC_UPSTEAM_OP_PARAM_MAX_FAILS;
                 op->verbose = 1;
 
-            } else if (ngx_strcmp("arg_max_conns", args[i].data) == 0) {
+            }
+#if defined(nginx_version) && (nginx_version >= 1011005)
+             else if (ngx_strcmp("arg_max_conns", args[i].data) == 0) {
                 op->max_conns = ngx_atoi(var->data, var->len);
                 if (op->max_conns == NGX_ERROR) {
                     op->status = NGX_HTTP_BAD_REQUEST;
@@ -160,7 +166,7 @@ ngx_dynamic_upstream_build_op(ngx_http_request_t *r, ngx_dynamic_upstream_op_t *
                 op->op |= NGX_DYNAMIC_UPSTEAM_OP_PARAM;
                 op->op_param |= NGX_DYNAMIC_UPSTEAM_OP_PARAM_MAX_CONNS;
                 op->verbose = 1;
-
+#endif
             } else if (ngx_strcmp("arg_fail_timeout", args[i].data) == 0) {
                 op->fail_timeout = ngx_atoi(var->data, var->len);
                 if (op->fail_timeout == NGX_ERROR) {
@@ -794,9 +800,11 @@ ngx_dynamic_upstream_http_op_update_param(ngx_log_t *log,
         target->max_fails = op->max_fails;
     }
 
+#if defined(nginx_version) && (nginx_version >= 1011005)
     if (op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_MAX_CONNS) {
         target->max_conns = op->max_conns;
     }
+#endif
 
     if (op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_FAIL_TIMEOUT) {
         target->fail_timeout = op->fail_timeout;
@@ -865,9 +873,11 @@ ngx_dynamic_upstream_stream_op_update_param(ngx_log_t *log,
         target->max_fails = op->max_fails;
     }
 
+#if defined(nginx_version) && (nginx_version >= 1011005)
     if (op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_MAX_CONNS) {
         target->max_conns = op->max_conns;
     }
+#endif
 
     if (op->op_param & NGX_DYNAMIC_UPSTEAM_OP_PARAM_FAIL_TIMEOUT) {
         target->fail_timeout = op->fail_timeout;
