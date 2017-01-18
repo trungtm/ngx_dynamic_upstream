@@ -166,8 +166,9 @@ ngx_dynamic_upstream_build_op(ngx_http_request_t *r, ngx_dynamic_upstream_op_t *
                 op->op |= NGX_DYNAMIC_UPSTEAM_OP_PARAM;
                 op->op_param |= NGX_DYNAMIC_UPSTEAM_OP_PARAM_MAX_CONNS;
                 op->verbose = 1;
+            }
 #endif
-            } else if (ngx_strcmp("arg_fail_timeout", args[i].data) == 0) {
+            else if (ngx_strcmp("arg_fail_timeout", args[i].data) == 0) {
                 op->fail_timeout = ngx_atoi(var->data, var->len);
                 if (op->fail_timeout == NGX_ERROR) {
                     op->status = NGX_HTTP_BAD_REQUEST;
