@@ -102,7 +102,7 @@ server 127.0.0.1:6003 weight=10 max_fails=5 fail_timeout=5;
 $
 ```
 
-The supported parameters are blow.
+The supported parameters are below.
 
  * weight
  * max_fails
