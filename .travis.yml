@@ -1,0 +1,43 @@
+language: c
+compilers:
+  - clang
+  - gcc
+env:
+  # Mainline
+  - X_NGINX_VERSION=1.13.0
+  # Stable
+  - X_NGINX_VERSION=1.12.0
+  # Previous stable
+  - X_NGINX_VERSION=1.10.3
+sudo: false
+addons:
+  apt:
+    packages:
+      - libpcre3-dev
+      - libssl-dev
+      - perl
+      - cpanminus
+cache:
+  apt: true
+  cpan: true
+  ccache: true
+  directories:
+    - $HOME/perl5
+before_install:
+  - cpanm --notest --local-lib=$HOME/perl5 Test::Harness
+  - cpanm --notest --local-lib=$HOME/perl5 Test::Nginx
+install:
+  - wget -O - http://nginx.org/download/nginx-${X_NGINX_VERSION}.tar.gz | tar -xzf -
+  - cd nginx-${X_NGINX_VERSION}
+  - git clone https://github.com/trungtm/ngx_dynamic_upstream
+  - ./configure --with-debug --with-stream --add-module=./ngx_dynamic_upstream
+  - make
+  - export PATH=$(pwd)/objs:$PATH
+  - export X_MODULE_PATH=$(pwd)/objs
+  - cd ..
+script:
+  - PERL5LIB=$HOME/perl5/lib/perl5 TEST_NGINX_VERBOSE=true ./tests.sh
+after_failure:
+  - cat t/servroot/conf/nginx.conf
+  - cat t/servroot/access.log
+  - cat t/servroot/error.log
